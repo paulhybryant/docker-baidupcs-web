@@ -2,10 +2,9 @@ ARG ARCH=docker.io
 FROM ${ARCH}/alpine:3.9
 
 LABEL maintainer="paulhybryant@gmail.com"
-ENV BAIDUPCS_GO_CONFIG_DIR=/config
 
 COPY qemu-aarch64-static /usr/bin/
-ADD pcs_config.json ${BAIDUPCS_GO_CONFIG_DIR}/
+ADD pcs_config.json /config/
 
 RUN apk add curl &&\
   if [[ "${ARCH}" == "arm64v8" ]]; then binarch="arm64"; else binarch="amd64"; fi && \
@@ -15,5 +14,6 @@ RUN apk add curl &&\
   mv /tmp/BaiduPCS-Go-3.6.7-linux-${binarch}/BaiduPCS-Go /usr/bin/baidupcs
 
 EXPOSE 5299
-VOLUME /downloads ${BAIDUPCS_GO_CONFIG_DIR}
-CMD /usr/bin/baidupcs web --access &> ${BAIDUPCS_GO_CONFIG_DIR}/server.log
+VOLUME /downloads /config
+COPY entrypoint.sh /usr/bin/
+ENTRYPOINT ["/usr/bin/entrypoint.sh"]
