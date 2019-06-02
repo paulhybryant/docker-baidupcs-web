@@ -5,7 +5,6 @@ ARG ARCH
 LABEL maintainer="paulhybryant@gmail.com"
 
 COPY qemu-aarch64-static /usr/bin/
-ADD pcs_config.json /config/
 
 RUN apk add curl && \
   if [[ "${ARCH}" == "arm64v8" ]]; then binarch="arm64"; else binarch="amd64"; fi && \
