@@ -2,7 +2,6 @@ ARG ARCH=docker.io
 FROM ${ARCH}/alpine:3.9
 
 LABEL maintainer="paulhybryant@gmail.com"
-ENV PORT 8009
 ENV BAIDUPCS_GO_CONFIG_DIR=/config
 
 COPY qemu-aarch64-static /usr/bin/
@@ -15,6 +14,6 @@ RUN apk add curl &&\
   unzip /tmp/BaiduPCS-Go-3.6.7-linux-${binarch}.zip && \
   mv /tmp/BaiduPCS-Go-3.6.7-linux-${binarch}/BaiduPCS-Go /usr/bin/baidupcs
 
-EXPOSE ${PORT}
+EXPOSE 5299
 VOLUME /downloads ${BAIDUPCS_GO_CONFIG_DIR}
-CMD /usr/bin/baidupcs web --port ${PORT} --access &> ${BAIDUPCS_GO_CONFIG_DIR}/server.log
+CMD /usr/bin/baidupcs web --access &> ${BAIDUPCS_GO_CONFIG_DIR}/server.log
