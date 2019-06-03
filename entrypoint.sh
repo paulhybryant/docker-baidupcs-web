@@ -1,6 +1,11 @@
 #!/bin/sh
 
-BAIDUPCS_GO_CONFIG_DIR=/config
+export BAIDUPCS_GO_CONFIG_DIR=/config
 
-/usr/bin/baidupcs web --access &> /config/server.log
-tail -f /config/server.log
+if [[ -f "${BAIDUPCS_GO_CONFIG_DIR}/pcs_config.json" ]]; then
+  /usr/bin/baidupcs web --access &> /config/server.log
+  tail -f /config/server.log
+else
+  echo "Configuration file not found."
+  exit 1
+fi
